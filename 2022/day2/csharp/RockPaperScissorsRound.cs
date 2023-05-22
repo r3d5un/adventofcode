@@ -17,6 +17,13 @@ public class RockPaperScissorsRound : IRockPaperScissorsRound
 
     public RoundScore PlayRound()
     {
+        if (PlayerOneChoice.GetType().IsInstanceOfType(PlayerTwoChoice))
+        {
+            return new RoundScore(
+                playerOnePoints: (3 + PlayerOneChoice.Value),
+                playerTwoPoints: (3 + PlayerTwoChoice.Value)
+            );
+        }
         if (PlayerOneChoice.GetType() == typeof(Rock))
         {
             if (PlayerTwoChoice.GetType() == typeof(Paper))
@@ -26,13 +33,10 @@ public class RockPaperScissorsRound : IRockPaperScissorsRound
                     playerTwoPoints: (6 + PlayerTwoChoice.Value)
                 );
             }
-            if (PlayerTwoChoice.GetType() == typeof(Scissors))
-            {
-                return new RoundScore(
-                    playerOnePoints: (6 + PlayerOneChoice.Value),
-                    playerTwoPoints: (0 + PlayerTwoChoice.Value)
-                );
-            }
+            return new RoundScore(
+                playerOnePoints: (6 + PlayerOneChoice.Value),
+                playerTwoPoints: (0 + PlayerTwoChoice.Value)
+            );
         }
         if (PlayerOneChoice.GetType() == typeof(Paper))
         {
@@ -43,39 +47,21 @@ public class RockPaperScissorsRound : IRockPaperScissorsRound
                     playerTwoPoints: (6 + PlayerTwoChoice.Value)
                 );
             }
-            if (PlayerTwoChoice.GetType() == typeof(Rock))
-            {
-                return new RoundScore(
-                    playerOnePoints: (6 + PlayerOneChoice.Value),
-                    playerTwoPoints: (0 + PlayerTwoChoice.Value)
-                );
-            }
-        }
-        if (PlayerOneChoice.GetType() == typeof(Scissors))
-        {
-            if (PlayerTwoChoice.GetType() == typeof(Rock))
-            {
-                return new RoundScore(
-                    playerOnePoints: (0 + PlayerOneChoice.Value),
-                    playerTwoPoints: (6 + PlayerTwoChoice.Value)
-                );
-            }
-            if (PlayerTwoChoice.GetType() == typeof(Paper))
-            {
-                return new RoundScore(
-                    playerOnePoints: (6 + PlayerOneChoice.Value),
-                    playerTwoPoints: (0 + PlayerTwoChoice.Value)
-                );
-            }
-        }
-        if (PlayerOneChoice.GetType().IsInstanceOfType(PlayerTwoChoice))
-        {
             return new RoundScore(
-                playerOnePoints: (3 + PlayerOneChoice.Value),
-                playerTwoPoints: (3 + PlayerTwoChoice.Value)
+                playerOnePoints: (6 + PlayerOneChoice.Value),
+                playerTwoPoints: (0 + PlayerTwoChoice.Value)
             );
         }
-
-        throw new Exception("No branches hit");
+        if (PlayerTwoChoice.GetType() == typeof(Rock))
+        {
+            return new RoundScore(
+                playerOnePoints: (0 + PlayerOneChoice.Value),
+                playerTwoPoints: (6 + PlayerTwoChoice.Value)
+            );
+        }
+        return new RoundScore(
+            playerOnePoints: (6 + PlayerOneChoice.Value),
+            playerTwoPoints: (0 + PlayerTwoChoice.Value)
+        );
     }
 }
