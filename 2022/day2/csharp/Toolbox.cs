@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using csharp.Choices;
 
 namespace csharp;
