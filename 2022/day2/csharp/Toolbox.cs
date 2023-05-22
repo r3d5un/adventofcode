@@ -5,7 +5,7 @@ namespace csharp;
 
 public static class Toolbox
 {
-    public static IChoice SubstituteValue(String value)
+    private static IChoice SubstituteValue(String value)
     {
         if (value.Equals("A") | value.Equals("X"))
         {
