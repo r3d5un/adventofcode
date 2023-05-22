@@ -123,22 +123,66 @@ def get_player_choices(line: str) -> PlayerChoices:
     )
 
 
+def enforce_strategy_guide(
+    opponents_choice: Rock | Paper | Scissors, wanted_outcome: str
+) -> Rock | Paper | Scissors:
+    """
+    Accepts the rock, paper, scissors choice of an opponent, along with the desired
+    outcome of the round in `wanted_outcome`.
+
+    `X` should cause an intentional loss for, `Y` should force a draw and `Z` should
+    cause a win.
+    """
+    if wanted_outcome == "X":
+        # Intentionally lose
+        if isinstance(opponents_choice, Rock):
+            return Scissors()
+        elif isinstance(opponents_choice, Paper):
+            return Rock()
+        else:
+            return Paper()
+    elif wanted_outcome == "Y":
+        # Force a draw
+        return opponents_choice
+    else:
+        # Win
+        if isinstance(opponents_choice, Rock):
+            return Paper()
+        elif isinstance(opponents_choice, Paper):
+            return Scissors()
+        else:
+            return Rock()
+
+
 def main():
     input_file_path = Path("../input.txt")
     with open(input_file_path, "r") as f:
         input_lines: list[str] = f.readlines()
 
-    player_2_sum = 0
+    part_1_sum = 0
     for line in input_lines:
         if line != "\n":
             choices = get_player_choices(line)
             round = RockPaperScissorsRound(
                 choices.player_1_choice, choices.player_2_choice
             )
-            player_2_sum += round.result.player_2_points
+            part_1_sum += round.result.player_2_points
 
-    print(f"Total score after all rounds for player 2: {player_2_sum}")
+    print(f"Part 1: {part_1_sum}")
 
+    part_2_sum = 0
+    for line in input_lines:
+        if line != "\n":
+            choices = get_player_choices(line)
+            choices.player_2_choice = enforce_strategy_guide(
+                choices.player_1_choice, wanted_outcome=line.strip().split()[1]
+            )
+            round = RockPaperScissorsRound(
+                choices.player_1_choice, choices.player_2_choice
+            )
+            part_2_sum += round.result.player_2_points
+
+    print(f"Part 2: {part_2_sum}")
 
 if __name__ == "__main__":
     main()
