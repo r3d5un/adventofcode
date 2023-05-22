@@ -34,44 +34,24 @@ public static class Toolbox
 
     public static IChoice EnforceStrategyGuide(IChoice opponentsChoice, String wantedOutcome)
     {
-        if (wantedOutcome == "X")
+        switch (wantedOutcome)
         {
-            if (opponentsChoice.GetType() == typeof(Rock))
-            {
+            case "X" when opponentsChoice.GetType() == typeof(Rock):
                 return new Scissors();
-            }
-            if (opponentsChoice.GetType() == typeof(Paper))
-            {
+            case "X" when opponentsChoice.GetType() == typeof(Paper):
                 return new Rock();
-            }
-            if (opponentsChoice.GetType() == typeof(Scissors))
-            {
+            case "X" when opponentsChoice.GetType() == typeof(Scissors):
                 return new Paper();
-            }
-        }
-
-        if (wantedOutcome == "Y")
-        {
-            return opponentsChoice;
-        }
-
-        if (wantedOutcome == "Z")
-        {
-            if (opponentsChoice.GetType() == typeof(Rock))
-            {
+            case "Y":
+                return opponentsChoice;
+            case "Z" when opponentsChoice.GetType() == typeof(Rock):
                 return new Paper();
-            }
-            if (opponentsChoice.GetType() == typeof(Paper))
-            {
+            case "Z" when opponentsChoice.GetType() == typeof(Paper):
                 return new Scissors();
-            }
-
-            if (opponentsChoice.GetType() == typeof(Scissors))
-            {
+            case "Z" when opponentsChoice.GetType() == typeof(Scissors):
                 return new Rock();
-            }
+            default:
+                throw new InvalidDataException("Parameters outside expectations");
         }
-
-        throw new InvalidDataException("Parameters outside expectations");
     }
 }
