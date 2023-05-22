@@ -36,15 +36,15 @@ public static class Toolbox
     {
         if (wantedOutcome == "X")
         {
-            if (opponentsChoice.GetType().IsInstanceOfType(new Rock()))
+            if (opponentsChoice.GetType() == typeof(Rock))
             {
                 return new Scissors();
             }
-            if (opponentsChoice.GetType().IsInstanceOfType(new Paper()))
+            if (opponentsChoice.GetType() == typeof(Paper))
             {
                 return new Rock();
             }
-            if (opponentsChoice.GetType().IsInstanceOfType(new Scissors()))
+            if (opponentsChoice.GetType() == typeof(Scissors))
             {
                 return new Paper();
             }
@@ -57,16 +57,16 @@ public static class Toolbox
 
         if (wantedOutcome == "Z")
         {
-            if (opponentsChoice.GetType().IsInstanceOfType(new Rock()))
+            if (opponentsChoice.GetType() == typeof(Rock))
             {
                 return new Paper();
             }
-            if (opponentsChoice.GetType().IsInstanceOfType(new Paper()))
+            if (opponentsChoice.GetType() == typeof(Paper))
             {
                 return new Scissors();
             }
 
-            if (opponentsChoice.GetType().IsInstanceOfType(new Scissors()))
+            if (opponentsChoice.GetType() == typeof(Scissors))
             {
                 return new Rock();
             }

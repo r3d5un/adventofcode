@@ -18,16 +18,16 @@ public class RockPaperScissorsRound : IRockPaperScissorsRound
 
     public RoundScore PlayRound()
     {
-        if (PlayerOneChoice.GetType().IsInstanceOfType(new Rock()))
+        if (PlayerOneChoice.GetType() == typeof(Rock))
         {
-            if (PlayerTwoChoice.GetType().IsInstanceOfType(new Paper()))
+            if (PlayerTwoChoice.GetType() == typeof(Paper))
             {
                 return new RoundScore(
                     playerOnePoints: (0 + PlayerOneChoice.Value),
                     playerTwoPoints: (6 + PlayerTwoChoice.Value)
                 );
             }
-            if (PlayerTwoChoice.GetType().IsInstanceOfType(new Scissors()))
+            if (PlayerTwoChoice.GetType() == typeof(Scissors))
             {
                 return new RoundScore(
                     playerOnePoints: (6 + PlayerOneChoice.Value),
@@ -35,16 +35,16 @@ public class RockPaperScissorsRound : IRockPaperScissorsRound
                 );
             }
         }
-        if (PlayerOneChoice.GetType().IsInstanceOfType(new Paper()))
+        if (PlayerOneChoice.GetType() == typeof(Paper))
         {
-            if (PlayerTwoChoice.GetType().IsInstanceOfType(new Scissors()))
+            if (PlayerTwoChoice.GetType() == typeof(Scissors))
             {
                 return new RoundScore(
                     playerOnePoints: (0 + PlayerOneChoice.Value),
                     playerTwoPoints: (6 + PlayerTwoChoice.Value)
                 );
             }
-            if (PlayerTwoChoice.GetType().IsInstanceOfType(new Rock()))
+            if (PlayerTwoChoice.GetType() == typeof(Rock))
             {
                 return new RoundScore(
                     playerOnePoints: (6 + PlayerOneChoice.Value),
@@ -52,16 +52,16 @@ public class RockPaperScissorsRound : IRockPaperScissorsRound
                 );
             }
         }
-        if (PlayerOneChoice.GetType().IsInstanceOfType(new Scissors()))
+        if (PlayerOneChoice.GetType() == typeof(Scissors))
         {
-            if (PlayerTwoChoice.GetType().IsInstanceOfType(new Rock()))
+            if (PlayerTwoChoice.GetType() == typeof(Rock))
             {
                 return new RoundScore(
                     playerOnePoints: (0 + PlayerOneChoice.Value),
                     playerTwoPoints: (6 + PlayerTwoChoice.Value)
                 );
             }
-            if (PlayerTwoChoice.GetType().IsInstanceOfType(new Paper()))
+            if (PlayerTwoChoice.GetType() == typeof(Paper))
             {
                 return new RoundScore(
                     playerOnePoints: (6 + PlayerOneChoice.Value),
