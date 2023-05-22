@@ -103,7 +103,10 @@ class PlayerChoices:
     player_2_choice: Rock | Paper | Scissors
 
     def __repr__(self) -> str:
-        return f"<PlayerChoices(player_1_choice={self.player_1_choice}, player_2_choice={self.player_2_choice})>"
+        return (
+            f"<PlayerChoices(player_1_choice={self.player_1_choice}"
+            f"player_2_choice={self.player_2_choice})>"
+        )
 
 
 def subsitute_value(value: str) -> Rock | Paper | Scissors:
