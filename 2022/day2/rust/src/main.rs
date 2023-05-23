@@ -1,5 +1,15 @@
 fn main() {
-    println!("Hello, world!");
+    let input_text = fs::read_to_string("../input.txt").expect("Failed to read the file");
+    let lines: Vec<&str> = input_text.split("\n").collect();
+    let mut part_one_sum: u32 = 0;
+    for line in lines {
+        if !line.is_empty() {
+            dbg!(line);
+            let player_choices: PlayerChoices = get_player_choices(line);
+        }
+    }
+}
+
 struct Choice {
     value: String,
     points: u8,
