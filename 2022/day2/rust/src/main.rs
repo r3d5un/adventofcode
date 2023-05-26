@@ -4,7 +4,7 @@ fn main() {
     let input_text = fs::read_to_string("../input.txt").expect("Failed to read the file");
     let lines: Vec<&str> = input_text.split("\n").collect();
     let mut part_one_sum: u32 = 0;
-    for line in lines {
+    for line in &lines {
         if !line.is_empty() {
             dbg!(line);
             let player_choices: PlayerChoices = get_player_choices(line);
@@ -21,7 +21,30 @@ fn main() {
             part_one_sum += u32::try_from(game.result.player_two_points).unwrap();
         }
     }
-    println!("Part 1 Sum: {}", part_one_sum);
+    println!("Part 1 Sum: {}\n\n\n", part_one_sum);
+
+    let mut part_two_sum: u32 = 0;
+    for line in &lines {
+        if !line.is_empty() {
+            dbg!(line);
+            let mut player_choices: PlayerChoices = get_player_choices(line);
+            let guide_value_character: Vec<&str> = line.split(" ").collect();
+            player_choices.player_two_choice =
+                enforce_strategy_guide(&player_choices.player_one_choice, guide_value_character[1]);
+            let mut game = RockPaperScissors {
+                player_one_choice: player_choices.player_one_choice,
+                player_two_choice: player_choices.player_two_choice,
+                result: RoundScores {
+                    player_one_points: 0,
+                    player_two_points: 0,
+                },
+            };
+            game.play();
+            dbg!(&game);
+            part_two_sum += u32::try_from(game.result.player_two_points).unwrap();
+        }
+    }
+    println!("Part 2 Sum: {}", part_two_sum);
 }
 
 #[derive(Debug)]
@@ -133,5 +156,52 @@ impl RockPaperScissors {
         } else {
             panic!("Invalid choices");
         }
+    }
+}
+
+fn enforce_strategy_guide(opponents_choice: &Choice, wanted_outcome: &str) -> Choice {
+    if wanted_outcome == "X" {
+        // Intentionally lose
+        println!("LOSE!");
+        if opponents_choice.value == "rock" {
+            return Choice {
+                value: String::from("scissors"),
+                points: 3,
+            };
+        } else if opponents_choice.value == "paper" {
+            return Choice {
+                value: String::from("rock"),
+                points: 1,
+            };
+        } else {
+            return Choice {
+                value: String::from("paper"),
+                points: 2,
+            };
+        }
+    } else if wanted_outcome == "Z" {
+        println!("WIN!");
+        if opponents_choice.value == "rock" {
+            return Choice {
+                value: String::from("paper"),
+                points: 2,
+            };
+        } else if opponents_choice.value == "paper" {
+            return Choice {
+                value: String::from("scissors"),
+                points: 3,
+            };
+        } else {
+            return Choice {
+                value: String::from("rock"),
+                points: 1,
+            };
+        }
+    } else {
+        println!("DRAW!");
+        return Choice {
+            value: opponents_choice.value.clone(),
+            points: opponents_choice.points.clone(),
+        };
     }
 }
