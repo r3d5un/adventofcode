@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "python"
+name = "day3_python"
 version = "0.1.0"
 description = ""
 authors = ["r3d5un <r3d5un@pm.me>"]
