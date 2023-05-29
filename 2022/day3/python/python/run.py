@@ -31,6 +31,22 @@ def get_interserction_character(first_compartment: str, second_compartment: str)
     return set(first_compartment).intersection(set(second_compartment)).pop()
 
 
+def get_rucksack_groups(rucksacks: list[str], group_size: int):
+    return (
+        rucksacks[pos : pos + group_size]
+        for pos in range(0, len(rucksacks), group_size)
+    )
+
+
+def get_badge_for_group(rucksack_group: list[str]) -> str:
+    return (
+        set(rucksack_group[0].strip())
+        .intersection(set(rucksack_group[1].strip()))
+        .intersection(set(rucksack_group[2].strip()))
+        .pop()
+    )
+
+
 def main():
     with open("../input.txt", "r") as f:
         rucksacks: list = f.readlines()
@@ -47,8 +63,14 @@ def main():
         )
 
         part_one_sum += convert_to_priority_value(item)
-    
+
     print(f"Part one sum: {part_one_sum}")
+
+    badge_sum: int = 0
+    for rucksack_group in get_rucksack_groups(rucksacks=rucksacks, group_size=3):
+        badge_sum += convert_to_priority_value(get_badge_for_group(rucksack_group))
+
+    print(f"Part two sum: {badge_sum}")
 
 
 if __name__ == "__main__":
