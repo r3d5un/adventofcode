@@ -26,5 +26,21 @@ public static class Toolbox
         characterValue = character;
         return characterValue += 1;
     }
+
+    public static List<String> SplitIntoCompartments(String RucksackContents)
+    {
+        if (RucksackContents.Length < 1)
+        {
+            throw new Exception($"Rucksack contents to short: {RucksackContents}");
+        }
+
+
+
+        return new List<String>
+        {
+          RucksackContents.Substring(0, (int)(RucksackContents.Length / 2)),
+          RucksackContents.Substring((int)(RucksackContents.Length /2), (int)(RucksackContents.Length / 2)),
+        };
+    }
 }
 
