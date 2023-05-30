@@ -45,5 +45,14 @@ public static class Toolbox
     {
         return firstCompartment.Intersect(secondCompartment).First();
     }
+
+    public static char GetBadgeForGroup(List<String> RucksackGroup)
+    {
+        if (RucksackGroup.Count() > 3 && RucksackGroup.Count() < 3)
+        {
+            throw new Exception($"RucksackGroup must be exactly length 3, got {RucksackGroup.Count()}");
+        }
+        return RucksackGroup[0].Trim().Intersect(RucksackGroup[1].Trim().Intersect(RucksackGroup[2].Trim())).First();
+    }
 }
 
