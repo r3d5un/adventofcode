@@ -27,7 +27,7 @@ public static class Toolbox
         return characterValue += 1;
     }
 
-    public static List<String> SplitIntoCompartments(String RucksackContents)
+    public static List<List<char>> SplitIntoCompartments(String RucksackContents)
     {
         if (RucksackContents.Length < 1)
         {
@@ -36,10 +36,10 @@ public static class Toolbox
 
 
 
-        return new List<String>
+        return new List<List<char>>
         {
-          RucksackContents.Substring(0, (int)(RucksackContents.Length / 2)),
-          RucksackContents.Substring((int)(RucksackContents.Length /2), (int)(RucksackContents.Length / 2)),
+          RucksackContents.Substring(0, (int)(RucksackContents.Length / 2)).ToList(),
+          RucksackContents.Substring((int)(RucksackContents.Length /2), (int)(RucksackContents.Length / 2)).ToList(),
         };
     }
 }
