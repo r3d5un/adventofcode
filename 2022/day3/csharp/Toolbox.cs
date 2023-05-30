@@ -34,8 +34,6 @@ public static class Toolbox
             throw new Exception($"Rucksack contents to short: {RucksackContents}");
         }
 
-
-
         return new List<List<char>>
         {
           RucksackContents.Substring(0, (int)(RucksackContents.Length / 2)).ToList(),
