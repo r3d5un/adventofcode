@@ -42,5 +42,10 @@ public static class Toolbox
           RucksackContents.Substring((int)(RucksackContents.Length /2), (int)(RucksackContents.Length / 2)).ToList(),
         };
     }
+
+    public static char GetIntersectionCharacter(List<char> firstCompartment, List<char> secondCompartment)
+    {
+        return firstCompartment.Intersect(secondCompartment).First();
+    }
 }
 
