@@ -12,3 +12,11 @@ foreach (String line in inputText)
     sumPartOne += ConvertToPriorityValue(item);
 }
 Console.WriteLine($"Part one sum: {sumPartOne}");
+
+int sumPartTwo = 0;
+for (var i = 0; i < inputText.Count(); i += 3)
+{
+    char badge = GetBadgeForGroup(inputText.Skip(i).Take(3).ToList());
+    sumPartTwo += ConvertToPriorityValue(badge);
+}
+Console.WriteLine($"Part one sum: {sumPartTwo}");
