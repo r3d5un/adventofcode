@@ -16,15 +16,17 @@ public static class Toolbox
         {
             throw new Exception($"Character {character} is not alphanumeric");
         }
+        int initialUpperCaseValue = (char)"A"[0];
+        int initialLowerCaseValue = (char)"a"[0];
         // Implicitly casts character to UTF-8 integer code value
         int characterValue;
         if (Char.IsUpper(character))
         {
             characterValue = character;
-            return characterValue += 27;
+            return characterValue - initialUpperCaseValue + 27;
         }
         characterValue = character;
-        return characterValue += 1;
+        return characterValue - initialLowerCaseValue + 1;
     }
 
     public static List<List<char>> SplitIntoCompartments(String RucksackContents)
