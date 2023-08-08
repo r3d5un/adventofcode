@@ -25,18 +25,28 @@ func main() {
 		}
 
 		intersection := getIntersectionOfStrings(part1, part2)
-		fmt.Printf("Intersection of %s and %s is %s\n", part1, part2, string(intersection))
 
 		charVal, err := convertRuneToIntValue(intersection[0])
 		if err != nil {
 			fmt.Printf("Error: %s\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Value of intersected character is %d\n", charVal)
 
 		partOneSum += charVal
 	}
 	fmt.Printf("Part 1 sum is %d\n", partOneSum)
+
+	partTwoSum := 0
+	for i := 0; i < len(rucksacks); i += 3 {
+		char, err := getBadge(rucksacks[i], rucksacks[i+1], rucksacks[i+2])
+		charVal, err := convertRuneToIntValue(char)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+			os.Exit(1)
+		}
+		partTwoSum += charVal
+	}
+	fmt.Printf("Part 2 sum is %d\n", partTwoSum)
 }
 
 func parseLines(input []byte) (values []string) {
@@ -86,4 +96,26 @@ func convertRuneToIntValue(char rune) (value int, err error) {
 	}
 
 	return int(char-initLowerChar) + 1, nil
+}
+
+func getBadge(part1, part2, part3 string) (char rune, err error) {
+	h := make(map[rune]bool)
+	var ret []rune
+
+	// Note: Could reuse getIntersectionOfStrings, but I wanted the function to be self-contained
+	for _, c := range part1 {
+		h[c] = true
+	}
+	for _, c := range part2 {
+		if h[c] {
+			ret = append(ret, c)
+		}
+	}
+	for _, char := range ret {
+		if strings.Contains(part3, string(char)) {
+			return char, nil
+		}
+	}
+
+	return 0, fmt.Errorf("No badge found")
 }
