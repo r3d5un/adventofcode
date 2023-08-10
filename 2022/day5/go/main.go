@@ -21,8 +21,10 @@ func main() {
 	}
 
 	stacks, instructions := parseLines(string(input))
-
 	fmt.Printf("Part1: %s\n", partOne(stacks, instructions))
+
+	stacks, instructions = parseLines(string(input))
+	fmt.Printf("Part2: %s\n", partTwo(stacks, instructions))
 }
 
 func partOne(stacks map[int][]rune, instructions []Instruction) (answer string) {
@@ -33,6 +35,20 @@ func partOne(stacks map[int][]rune, instructions []Instruction) (answer string) 
 
 			stacks[instruction.To] = append(stacks[instruction.To], movingCrate)
 		}
+	}
+
+	for i := 1; i < len(stacks)+1; i++ {
+		answer += string(stacks[i][len(stacks[i])-1])
+	}
+
+	return answer
+}
+
+func partTwo(stacks map[int][]rune, instructions []Instruction) (answer string) {
+	for _, instruction := range instructions {
+		fromIndex := len(stacks[instruction.From]) - instruction.Amount
+		stacks[instruction.To] = append(stacks[instruction.To], stacks[instruction.From][fromIndex:]...)
+		stacks[instruction.From] = stacks[instruction.From][:fromIndex]
 	}
 
 	for i := 1; i < len(stacks)+1; i++ {
