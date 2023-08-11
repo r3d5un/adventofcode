@@ -19,9 +19,8 @@ func main() {
 	pos, _ := findMarker(input, startOfPacketLength)
 	fmt.Printf("Part 1: The number of processed characters: %d\n", pos+startOfPacketLength)
 
-	// Part 2
 	pos, _ = findMarker(input, startOfMessageLength)
-	fmt.Printf("Part 1: The number of processed characters: %d\n", pos+startOfMessageLength)
+	fmt.Printf("Part 2: The number of processed characters: %d\n", pos+startOfMessageLength)
 }
 
 func findMarker(input []byte, markerSize int) (position int, marker []byte) {
