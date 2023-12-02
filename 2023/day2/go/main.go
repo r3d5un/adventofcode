@@ -21,10 +21,12 @@ func main() {
 	}
 
 	part1Sum := 0
+	part2PowerSum := 0
 
 	scanner := bufio.NewScanner(strings.NewReader(string(input)))
 	for scanner.Scan() {
 		possible := true
+		var rMin, gMin, bMin int = 0, 0, 0
 
 		gameID, err := getGameID(scanner.Text())
 		if err != nil {
@@ -47,13 +49,22 @@ func main() {
 				if draw.Number > rMax {
 					possible = false
 				}
+				if draw.Number > rMin {
+					rMin = draw.Number
+				}
 			case "green":
 				if draw.Number > gMax {
 					possible = false
 				}
+				if draw.Number > gMin {
+					gMin = draw.Number
+				}
 			case "blue":
 				if draw.Number > bMax {
 					possible = false
+				}
+				if draw.Number > bMin {
+					bMin = draw.Number
 				}
 			}
 		}
@@ -61,9 +72,12 @@ func main() {
 		if possible {
 			part1Sum += gameID
 		}
+
+		part2PowerSum += rMin * gMin * bMin
 	}
 
 	fmt.Println("Part 1 Sum:", part1Sum)
+	fmt.Println("Part 2 Sum:", part2PowerSum)
 }
 
 func getGameID(line string) (int, error) {
