@@ -28,6 +28,13 @@ func main() {
 	}
 
 	fmt.Println("Part 2:", p2)
+
+	p2Alt, err := Part2Alt(string(input))
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Part 2 Alt:", p2Alt)
 }
 
 func Part1(input string) (int, error) {
@@ -186,4 +193,57 @@ func convertToIntegerValue(s string) int {
 	default:
 		return 0
 	}
+}
+
+func Part2Alt(input string) (int, error) {
+	results := []int{}
+	scanner := bufio.NewScanner(strings.NewReader(input))
+	for scanner.Scan() {
+		substituted := SubstituteNumberString(scanner.Text())
+
+		matches := getMatches(substituted)
+		if len(matches) == 0 {
+			continue
+		}
+
+		decem := getFirstMatch(matches).value
+		uno := getLastMatch(matches).value
+
+		result := decem*10 + uno
+
+		results = append(results, result)
+	}
+	return sumSlice(results), nil
+}
+
+func SubstituteNumberString(s string) (newString string) {
+	strNum := []string{
+		"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+	}
+
+	for _, str := range strNum {
+		switch str {
+		case "one":
+			newString = strings.ReplaceAll(s, str, "o1e")
+		case "two":
+			newString = strings.ReplaceAll(s, str, "t2o")
+		case "three":
+			newString = strings.ReplaceAll(s, str, "t3hree")
+		case "four":
+			newString = strings.ReplaceAll(s, str, "f4our")
+		case "five":
+			newString = strings.ReplaceAll(s, str, "f5ive")
+		case "six":
+			newString = strings.ReplaceAll(s, str, "s6ix")
+		case "seven":
+			newString = strings.ReplaceAll(s, str, "se7en")
+		case "eight":
+			newString = strings.ReplaceAll(s, str, "e8ight")
+		case "nine":
+			newString = strings.ReplaceAll(s, str, "n9ine")
+		default:
+		}
+	}
+
+	return newString
 }
