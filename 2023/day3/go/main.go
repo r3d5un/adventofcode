@@ -23,13 +23,15 @@ func Part1(input string) int {
 	result := 0
 	grid := NewGrid(input)
 
+	minX, minY, maxX, maxY := grid.Bounds()
+
 	// line by line
-	for y := grid.MinY(); y <= grid.MaxY(); y++ {
+	for y := minY; y <= maxY; y++ {
 		var current int // value of current position
 		var symbol bool
 
 		// character by character
-		for x := grid.MinX(); x <= grid.MaxX(); x++ {
+		for x := minX; x <= maxX; x++ {
 			// if current position is a digit
 			if value, ok := grid[Coordinate{x, y}]; ok && value >= '0' && value <= '9' {
 				// multiply current by 10 and add the value of the digit
@@ -57,10 +59,11 @@ func Part2(input string) int {
 	grid := NewGrid(input)
 	stars := make(Stars)
 	starMap := make(StarMap)
+	minX, minY, maxX, maxY := grid.Bounds()
 
-	for y := grid.MinY(); y <= grid.MaxY(); y++ {
+	for y := minY; y <= maxY; y++ {
 		var current int
-		for x := grid.MinX(); x <= grid.MaxX(); x++ {
+		for x := minX; x <= maxX; x++ {
 			if value, ok := grid[Coordinate{x, y}]; ok && value >= '0' && value <= '9' {
 				current = 10*current + int(value-'0')
 				// get all adjacent stars
