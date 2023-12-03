@@ -16,6 +16,7 @@ func main() {
 	input := strings.TrimSuffix(string(fileContents), "\n")
 
 	fmt.Println("Part 1:", Part1(input))
+	fmt.Println("Part 2:", Part2(input))
 }
 
 func Part1(input string) int {
@@ -45,6 +46,48 @@ func Part1(input string) int {
 		}
 		if symbol {
 			result += current
+		}
+	}
+
+	return result
+}
+
+func Part2(input string) int {
+	result := 0
+	grid := NewGrid(input)
+	stars := make(Stars)
+	starMap := make(StarMap)
+
+	for y := grid.MinY(); y <= grid.MaxY(); y++ {
+		var current int
+		for x := grid.MinX(); x <= grid.MaxX(); x++ {
+			if value, ok := grid[Coordinate{x, y}]; ok && value >= '0' && value <= '9' {
+				current = 10*current + int(value-'0')
+				// get all adjacent stars
+				stars.AddAll(grid.getAdjacentStars(Coordinate{x, y})...)
+			} else {
+				if stars.Len() > 0 {
+					for star := range stars {
+						starMap[star] = append(starMap[star], current)
+					}
+				}
+				current = 0
+				stars.Clear()
+			}
+		}
+		if stars.Len() > 0 {
+			for star := range stars {
+				starMap[star] = append(starMap[star], current)
+			}
+		}
+		stars.Clear()
+	}
+
+	// loop through all stars. If a star was added twice, it is a star that is
+	// visible from two values. Multiply the two values and add to result.
+	for _, values := range starMap {
+		if len(values) == 2 {
+			result += values[0] * values[1]
 		}
 	}
 
@@ -146,4 +189,38 @@ func (grid Grid) isSymbolAdjacent(coordinate Coordinate) bool {
 	}
 
 	return false
+}
+
+func (grid Grid) getAdjacentStars(coordinate Coordinate) (result []Coordinate) {
+	for _, neighbor := range coordinate.GetNeighbours() {
+		if value, ok := grid[neighbor]; ok && value == '*' {
+			result = append(result, neighbor)
+		}
+	}
+
+	return result
+}
+
+type StarMap map[Coordinate][]int
+
+type Stars map[Coordinate]struct{}
+
+func (stars Stars) Len() int {
+	return len(stars)
+}
+
+func (stars Stars) Clear() {
+	for star := range stars {
+		delete(stars, star)
+	}
+}
+
+func (stars Stars) Add(star Coordinate) {
+	stars[star] = struct{}{}
+}
+
+func (stars Stars) AddAll(other ...Coordinate) {
+	for _, star := range other {
+		stars.Add(star)
+	}
 }
