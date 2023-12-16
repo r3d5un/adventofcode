@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	// "sync"
 )
 
 func main() {
@@ -15,6 +16,7 @@ func main() {
 
 	input := strings.TrimSuffix(string(fileContents), "\n")
 	fmt.Printf("Part 1: %d\n", Part1(input))
+	fmt.Printf("Part 2: %d\n", Part2(input))
 }
 
 func Part1(input string) int {
@@ -54,6 +56,50 @@ func Part1(input string) int {
 		}
 		if v[len(v)-1] < lowestLocation {
 			lowestLocation = v[len(v)-1]
+		}
+	}
+
+	return lowestLocation
+}
+
+func Part2(input string) (lowestLocation int) {
+	mapNames := []string{
+		"seed-to-soil",
+		"soil-to-fertilizer",
+		"fertilizer-to-water",
+		"water-to-light",
+		"light-to-temperature",
+		"temperature-to-humidity",
+		"humidity-to-location",
+	}
+
+	mappings := make(map[string]RangeSet)
+	for _, ms := range mapNames {
+		mappings[ms] = NewRangeSet(input, ms)
+	}
+
+	seeds := ParseSeeds(input)
+	lowestLocation = seeds[0]
+	fmt.Printf("seeds: %v\n", seeds)
+	fmt.Printf("initial location value: %d\n", lowestLocation)
+
+	for i := 0; i < len(seeds); i += 2 {
+		start := seeds[i]
+		length := seeds[i+1]
+
+		for j := 0; j < length; j++ {
+			v := start + j
+
+			for _, m := range mapNames {
+				rs := mappings[m]
+				v = rs.GetDestinationValue(v)
+
+				if "humidity-to-location" == m {
+					if v < lowestLocation {
+						lowestLocation = v
+					}
+				}
+			}
 		}
 	}
 
