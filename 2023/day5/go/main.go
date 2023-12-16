@@ -8,21 +8,56 @@ import (
 )
 
 func main() {
-	fileContents, err := os.ReadFile("../sample.txt")
+	fileContents, err := os.ReadFile("../input.txt")
 	if err != nil {
 		panic(err)
 	}
 
 	input := strings.TrimSuffix(string(fileContents), "\n")
-	Part1(input)
+	fmt.Printf("Part 1: %d\n", Part1(input))
 }
 
-func Part1(input string) {
-	seeds := ParseSeeds(input)
-	fmt.Println(seeds)
+func Part1(input string) int {
+	mapNames := []string{
+		"seed-to-soil",
+		"soil-to-fertilizer",
+		"fertilizer-to-water",
+		"water-to-light",
+		"light-to-temperature",
+		"temperature-to-humidity",
+		"humidity-to-location",
+	}
 
-	SeedToSoil := ParseMapping(input, "seed-to-soil")
-	fmt.Println(SeedToSoil)
+	mappings := make(map[string]RangeSet)
+
+	for _, ms := range mapNames {
+		mappings[ms] = NewRangeSet(input, ms)
+	}
+
+	tracker := make(map[int][]int)
+	for _, seed := range ParseSeeds(input) {
+		tracker[seed] = []int{seed}
+		t := seed
+
+		for _, v := range mapNames {
+			rs := mappings[v]
+
+			t = rs.GetDestinationValue(tracker[seed][len(tracker[seed])-1])
+			tracker[seed] = append(tracker[seed], t)
+		}
+	}
+
+	var lowestLocation int
+	for _, v := range tracker {
+		if lowestLocation == 0 {
+			lowestLocation = v[len(v)-1]
+		}
+		if v[len(v)-1] < lowestLocation {
+			lowestLocation = v[len(v)-1]
+		}
+	}
+
+	return lowestLocation
 }
 
 func ParseSeeds(input string) (seeds []int) {
@@ -74,7 +109,6 @@ func ParseMapping(input string, mapping string) (ranges []Range) {
 
 func ParseRange(value string) Range {
 	mapValues := strings.Fields(value)
-	fmt.Println(mapValues)
 
 	destinationRangeStart, err := strconv.Atoi(mapValues[0])
 	if err != nil {
@@ -102,4 +136,57 @@ type Range struct {
 	DestinationRangeStart int
 	SourceRangeStart      int
 	RangeLength           int
+}
+
+func (r Range) IsInSourceRange(value int) bool {
+	return value >= r.SourceRangeStart && value <= (r.SourceRangeStart+r.RangeLength)
+}
+
+func (r Range) IsInDestinationRange(value int) bool {
+	return value >= r.DestinationRangeStart && value <= (r.DestinationRangeStart+r.RangeLength)
+}
+
+func (r Range) GetDestinationValue(v int) int {
+	return r.DestinationRangeStart + (v - r.SourceRangeStart)
+}
+
+type RangeSet []Range
+
+func (rs *RangeSet) Add(r Range) {
+	*rs = append(*rs, r)
+}
+
+func (rs *RangeSet) GetDestinationValue(v int) int {
+	for _, r := range *rs {
+		if r.IsInSourceRange(v) {
+			return r.GetDestinationValue(v)
+		}
+	}
+
+	return v
+}
+
+func NewRangeSet(input string, mapping string) (rs RangeSet) {
+	var values []string
+	takeNext := false
+
+	lines := strings.Split(input, "\n")
+	for _, line := range lines {
+		if strings.Contains(line, mapping) {
+			takeNext = true
+			continue
+		}
+		if line == "" && takeNext {
+			break
+		}
+		if takeNext {
+			values = append(values, line)
+		}
+	}
+
+	for _, value := range values {
+		rs.Add(ParseRange(value))
+	}
+
+	return rs
 }
